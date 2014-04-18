@@ -1,94 +1,153 @@
 HTTP Router for Mojo.js [![Alt ci](https://travis-ci.org/classdojo/mojo-router.png)](https://travis-ci.org/classdojo/mojo-router)
 
+Kubrik is a flexible routing system inspired by [express](http://expressjs.com/), and [director](https://github.com/flatiron/director). It's built specifically
+for the browser, but it can also be used for other platforms such as node, or any mobile platform.
 
+## Features
 
-- accept query parameters
-- redirect should pull the name of the models, and use them as params.
-  - works by pulling properties from the view controller
+- enter & exit hooks for routes
+- parameter loading (like express)
+- nested routes
+
+## Example
 
 ```javascript
-var mojo = require("mojojs"), app = mojo.application;
+var router = require("kubrick")();
 
-app.use(require("mojo-router"));
-
-// authentication routes
-app.router.on({
-  states: {
-    app: "auth"
-  },
-  "/login": {
-    name: "login",
-    states: {
-      auth: "login"
-    }
-  }
-});
-
-
-function auth (req) {
-  // TODO
+function auth (location, next) {
+  // authenticate here
 }
 
+router.param("classroom", function (location, next) {
+  // load classroom
+  next(null, classroom);
+});  
 
-// application routes
-app.router.on({
-  pre: [auth, auth2],
-  states: {
-    app: "main"
-  },
+router.add({
+  enter: auth,
   "/classes/:classroom": {
-    states: {
-      main: "classes"
-    },
-    "/reports": {
-      name: "classroomReports",
-      states: {
-        classes: "reports"
+    routes: {
+      "/reports": {
+        enter: function (location, next) {
+          // do stuff with route
+        }
       }
     }
   }
 });
 
 
-app.router.param("")
+router.redirect("/classes/classid/reports", function (err, location) {
+  console.log(location.get("params.classroom")); // classroom model
+  console.log(location.get("pathname")); // /classes/classid/reports
+  console.log(location.get("url")); // same as pathname, but also includes query params
+});
+```
 
-app.router.on({
-  pre: [auth, auth2],
-  states: {
-    app: "main"
+### Entering
+
+Called when a route is entered.
+
+```javascript
+router.add({
+  "/home": {
+    enter: function (location, next) {
+      // do stuff
+      next(); // continue
+    }
+  }
+});
+
+router.redirect("/home", function (err, location) {
+
+});
+```
+
+You can also specify multiple enter handlers:
+
+```javascript
+router.add({
+  "/home": {
+    enter: [auth, function (location, next) {
+      // do stuff
+      next(); // continue
+    }]
+  }
+});
+```
+
+## API
+
+
+### Exiting
+
+Useful if you want to teardown a route before entering another.
+
+```javascript
+router.add({
+  "/contact": {
+    exit: function (location, next) {
+      next();
+    },
+    enter: function (location, next) {
+      next();
+    }
   },
-  routes: {
-    "/classes/:classroom": {
-      params: {
-        classroom: function (request, next) {
-
-        }
-      },
-      routes: {
-        "/reports": {
-
-        }
-      }
-    },
-    "?edit": {
-
+  "/home": {
+    enter: function (location, next) {
+      next(); // continue
     }
   }
 });
 
+router.redirect("/contact");
+router.redirect("/home"); // exit handler called
+```
 
-app.router.redirect("classroomReports", {
-  params: {
-    classroom: "classroom"
+Just like enter handlers, you can specify multiple exit handlers
+
+### States
+
+States are properties set by the router which may modify your application state. This is used specifically in mojo.js.
+
+```javascript
+router.add({
+  "/classes/:classroom": {
+    states: { app: "classes" },
+    routes: {
+      "/reports": {
+        states: { classes: "reports" }
+      }
+    }
   }
 });
+
+router.bind("location.states", function (states) {
+  // { app: "classes", classes: "reports" }
+});
+
+router.redirect("/classes/classid/reports");
 ```
 
+### Parameters
 
-```html
-<a data-href="studentMessages" data-bind="{{
-    active: <=>isActive
-}}">
-  student 1
-</a>
+Just like express.js, you have the ability to create parameter loaders.
+
+```javascript
+router.param("classroom", function (location, next) {
+  console.log("location.params.classroom"); // classid
+  next(null, classroomModel);
+});
+
+router.add({
+  "/classes/:classroom": {}
+});
+
+router.redirect("/classes/classid", function (err, location) {
+  console.log(location.get("params.classroom")); // classroomModel
+})
 ```
+
+### listeners
+
+Kubrick comes with an HTTP listener by default, which is loaded automatically in the browser.
