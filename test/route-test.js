@@ -74,7 +74,7 @@ describe("basic#", function () {
 
   it("properly orders routes with params last", function () {
 
-    var r = router().add({
+    /*var r = router().add({
       "/a": {
         routes: {
           "/:b": {},
@@ -97,6 +97,41 @@ describe("basic#", function () {
 
     for (var i = order.length; i--;) {
       expect(r.routes.all()[i].pathname).to.be(order[i]);
+    }*/
+
+
+    var r = router().add({
+      "/a": {
+        "/:b": {
+          "/c": {
+            "/d": {},
+            "/:d": {}
+          }
+        },
+        "/b": {
+          "/:c": {
+            "/:d": {},
+            "/d": {}
+          }
+        }
+      }
+    });
+
+    var order = [
+      "/a",
+      "/a/b",
+      "/a/:b",
+      "/a/b/:c",
+      "/a/:b/c",
+      "/a/b/:c/:d",
+      "/a/:b/c/d",
+      "/a/:b/c/:d",
+      "/a/b/:c/d"
+    ].reverse();
+
+    for (var i = r.routes.all().length; i--;) {
+      // expect(r.routes.all()[i].pathname).to.be(order[i]);
+      console.log(r.routes.all()[i].pathname);
     }
   });
 });
