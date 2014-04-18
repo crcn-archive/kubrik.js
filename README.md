@@ -175,11 +175,11 @@ Kubrick comes with an HTTP listener by default, which is loaded automatically in
   - `params` - route params
 - `complete` - called when redirected
 
-### router.add(routes)
+#### router.add(routes)
 
 adds new routes to the router
 
-### router.use(plugins...)
+#### router.use(plugins...)
 
 adds plugins to the router
 
