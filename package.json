@@ -1,6 +1,6 @@
 {
   "name": "kubrik",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "HTTP Router for Mojo.js",
   "main": "./lib/index.js",
   "scripts": {
@@ -19,18 +19,18 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "expect.js": "0.3.1",
-    "sinon": "^1.9.1",
-    "istanbul": "^0.2.7"
+    "sinon": "1.9.1",
+    "istanbul": "0.2.7"
   },
   "dependencies": {
     "protoclass": "0.0.x",
     "bindable": "0.5.x",
     "mocha": "1.15.1",
-    "underscore": "^1.6.0",
-    "async": "^0.7.0",
+    "underscore": "1.6.0",
+    "async": "0.7.0",
     "comerr": "0.0.6",
     "toarray": "0.0.1",
     "mediocre": "0.0.8",
-    "hasher": "^1.2.0"
+    "hasher": "1.2.0"
   }
 }
