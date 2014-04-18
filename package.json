@@ -19,7 +19,8 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "expect.js": "0.3.1",
-    "sinon": "^1.9.1"
+    "sinon": "^1.9.1",
+    "istanbul": "^0.2.7"
   },
   "dependencies": {
     "protoclass": "0.0.x",
