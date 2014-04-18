@@ -192,6 +192,25 @@ router.bind("location", function () {
 });
 ```
 
+#### Routes router.routes
+
+Routes property
+
+#### routes.find(query)
+
+Finds a route based on the query.
+
+```javascript
+router.add({
+  "/home": {
+    name: "homeRoute"
+  }
+});
+
+console.log(router.routes.find({ pathname: "/home" })); // /home route
+console.log(router.routes.find({ pathname: "homeRoute" })); // /home route
+```
+
 #### location.query
 
 query parameters on the location. Note that if the query changes, those changes will also be reflected in the HTTP url.
@@ -228,3 +247,18 @@ just the pathname of the location
 #### location.equals(location)
 
 returns TRUE of the both locations are the same
+
+
+## Mojo.js Usage
+
+basic usage:
+
+```javascript
+var mojo = require("mojojs"),
+app = new mojo.Application();
+app.use(require("kubrik"));
+
+app.router.add({
+  "/home": { }
+});
+```
