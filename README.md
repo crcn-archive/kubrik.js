@@ -1,15 +1,16 @@
-HTTP Router for Mojo.js [![Alt ci](https://travis-ci.org/classdojo/mojo-router.png)](https://travis-ci.org/classdojo/mojo-router)
+Kubrik HTTP Router [![Alt ci](https://travis-ci.org/classdojo/kubrik.png)](https://travis-ci.org/classdojo/mojo-router)
 
 Kubrik is a flexible routing system inspired by [express](http://expressjs.com/), and [director](https://github.com/flatiron/director). It's built specifically
 for the browser, but it can also be used for other platforms such as node, or any mobile platform.
 
-## Features
+### Features
 
 - enter & exit hooks for routes
 - parameter loading (like express)
 - nested routes
+- naming routes
 
-## Example
+### Example
 
 ```javascript
 var router = require("kubrick")();
@@ -26,11 +27,9 @@ router.param("classroom", function (location, next) {
 router.add({
   enter: auth,
   "/classes/:classroom": {
-    routes: {
-      "/reports": {
-        enter: function (location, next) {
-          // do stuff with route
-        }
+    "/reports": {
+      enter: function (location, next) {
+        // do stuff with route
       }
     }
   }
@@ -44,7 +43,7 @@ router.redirect("/classes/classid/reports", function (err, location) {
 });
 ```
 
-### Entering
+#### Entering Routes
 
 Called when a route is entered.
 
@@ -79,7 +78,7 @@ router.add({
 ## API
 
 
-### Exiting
+#### Exiting Routes
 
 Useful if you want to teardown a route before entering another.
 
@@ -106,7 +105,7 @@ router.redirect("/home"); // exit handler called
 
 Just like enter handlers, you can specify multiple exit handlers
 
-### States
+#### Route States
 
 States are properties set by the router which may modify your application state. This is used specifically in mojo.js.
 
@@ -114,10 +113,8 @@ States are properties set by the router which may modify your application state.
 router.add({
   "/classes/:classroom": {
     states: { app: "classes" },
-    routes: {
-      "/reports": {
-        states: { classes: "reports" }
-      }
+    "/reports": {
+      states: { classes: "reports" }
     }
   }
 });
@@ -129,7 +126,7 @@ router.bind("location.states", function (states) {
 router.redirect("/classes/classid/reports");
 ```
 
-### Parameters
+#### Parameters
 
 Just like express.js, you have the ability to create parameter loaders.
 
@@ -148,6 +145,67 @@ router.redirect("/classes/classid", function (err, location) {
 })
 ```
 
+#### Naming Routes
+
+```javascript
+router.add({
+  "/classes/:classroom": {
+    name: "classroom"
+  }
+});
+
+router.redirect("classroom", {
+  params: {
+    classroom: "classid"
+  }
+}, function (err, location) {
+
+});
+```
+
 ### listeners
 
 Kubrick comes with an HTTP listener by default, which is loaded automatically in the browser.
+
+#### router.location
+
+The current location of the router
+
+```javascript
+router.bind("location", function () {
+  // called whenever the location changes
+});
+```
+
+#### location.query
+
+query parameters on the location. Note that if the query changes, those changes will also be reflected in the HTTP url.
+
+```javascript
+router.bind("location", function (err, location) {
+  console.log(location.get("query.hello")); // blah
+  location.set("query.hello", "world"); // gets reflected in the HTTP url
+});
+
+router.redirect("/home?hello=blah");
+```
+
+#### location.params
+
+similar to `location.query`. `location.params` are taken from the route parameters.
+
+### location.url
+
+pathname + query params.
+
+```javascript
+router.bind("location", function (err, location) {
+  console.log(location.get("url")); // /home?hello=blah
+});
+
+router.redirect("/home?hello=blah");
+```
+
+#### location.pathname
+
+just the pathname of the location

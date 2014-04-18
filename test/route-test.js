@@ -59,12 +59,12 @@ describe("basic#", function () {
 
     var order = [
       "/a/d/e",
-      "/a/d",
       "/a/c",
       "/a/b",
-      "/c",
+      "/a/d",
       "/b",
-      "/a"
+      "/a",
+      "/c"
     ];
 
     for (var i = order.length; i--;) {
