@@ -278,4 +278,37 @@ describe("redirect#", function () {
       next();
     })
   });
+
+  it("redirects if the first param in next() has a redirect property", function (next) {
+
+    var r = router().add({
+      "/a": {
+        enter: function (r, next) {
+          r.redirect("/b");
+        }
+      },
+      "/b": {}
+    });
+
+    r.redirect("/a", function (err, location) {
+      expect(location.get("pathname")).to.be("/b");
+      next();
+    });
+  });
+
+  it("redirects if a redirect property is present", function (next) {
+
+    var r = router().add({
+      "/a": {
+        redirect: "/b"
+      },
+      "/b": {}
+    });
+
+    r.redirect("/a", function (err, location) {
+      expect(location.get("pathname")).to.be("/b");
+      next();
+    });
+  });
+
 });
