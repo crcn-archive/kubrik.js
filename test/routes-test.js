@@ -2,7 +2,7 @@ var Routes = require("../lib/routes"),
 expect     = require("expect.js");
 
 
-describe("route#", function () { 
+describe("routes#", function () { 
 
   it("can create a collection of routes", function () {
     new Routes();
@@ -34,8 +34,8 @@ describe("route#", function () {
     var ar = routes.find({ pathname: "/a" }),
     br     = routes.find({ pathname: "/a/b" });
 
-    expect(ar.path).to.be("/:a");
-    expect(br.path).to.be("/:a/:b");
+    expect(ar.pathname).to.be("/:a");
+    expect(br.pathname).to.be("/:a/:b");
 
     expect(ar.params).to.contain("a");
     expect(br.params).to.contain("a");
@@ -55,8 +55,8 @@ describe("route#", function () {
     });
 
     expect(routes.all().length).to.be(2);
-    expect(routes.all().shift().path).to.be("/a/b");
-    expect(routes.all().shift().path).to.be("/a");
+    expect(routes.all().shift().pathname).to.be("/a/b");
+    expect(routes.all().shift().pathname).to.be("/a");
   });
 
   it("can find a basic route", function () {
@@ -68,7 +68,7 @@ describe("route#", function () {
       "/c": {}
     });
 
-    expect(routes.find({ pathname: "/a" }).path).to.be("/a");
+    expect(routes.find({ pathname: "/a" }).pathname).to.be("/a");
   });
 
   it("can find a basic child route", function () {
@@ -82,7 +82,7 @@ describe("route#", function () {
       }
     });
 
-    expect(routes.find({ pathname: "/a/b" }).path).to.be("/a/b");
+    expect(routes.find({ pathname: "/a/b" }).pathname).to.be("/a/b");
   });
 
   it("can find a route based on the param", function () {
@@ -92,7 +92,7 @@ describe("route#", function () {
       "/:something": {}
     });
 
-    expect(routes.find({ pathname: "/abba" }).path).to.be("/:something");
+    expect(routes.find({ pathname: "/abba" }).pathname).to.be("/:something");
   });
 
   it("can find doesn't return param route if param is specified", function () {
@@ -112,9 +112,9 @@ describe("route#", function () {
     });
 
 
-    expect(routes.find({ pathname: "/a" }).path).to.be("/a");
-    expect(routes.find({ pathname: "/c" }).path).to.be("/:a");
-    expect(routes.find({ pathname: "/a/b" }).path).to.be("/a/b");
-    expect(routes.find({ pathname: "/a/c" }).path).to.be("/:a/:b");
+    expect(routes.find({ pathname: "/a" }).pathname).to.be("/a");
+    expect(routes.find({ pathname: "/c" }).pathname).to.be("/:a");
+    expect(routes.find({ pathname: "/a/b" }).pathname).to.be("/a/b");
+    expect(routes.find({ pathname: "/a/c" }).pathname).to.be("/:a/:b");
   });
 });

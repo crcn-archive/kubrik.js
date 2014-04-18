@@ -15,7 +15,7 @@ describe("router#", function () {
       }
     });
 
-    expect(r.routes.find({ pathname: "/a" }).path).to.be("/a");
+    expect(r.routes.find({ pathname: "/a" }).pathname).to.be("/a");
   });
 
 
@@ -127,6 +127,25 @@ describe("router#", function () {
     });
   });
 
+  it("cannot redirect to the same route, but passes the changed query params", function (next) {
+    var c= 0;
+    var r = router().add({
+      "/a": {
+        enter: function (request, next) {
+          c++;
+          next();
+        }
+      }
+    });
+    r.redirect("/a?name=1", function (err, loc) {
+      r.redirect("/a?name=2", function () {
+        expect(loc.get("query.name")).to.be("2");
+        expect(c).to.be(1);
+        next();
+      });
+    });
+  });
+
   it("calls exit on a route", function (next) {
     var c= 0, x = 0;
     var r = router().add({
@@ -190,7 +209,77 @@ describe("router#", function () {
     });
   });
 
-  it("can exit a route", function () {
+  it("can redirect to a route with params", function (next) {
+    var c = 0;
+    var r = router().add({
+      "/:a": {
+        routes: {
+          "/:b": {
+            name: "ab",
+            enter: function (request, next) {
+              c++;
+              next();
+            }
+          }
+        }
+      }
+    });
 
+    r.redirect("/1/2", function (err, location) {
+      expect(location.pathname).to.be("/1/2");
+      expect(location.route.pathname).to.be("/:a/:b");
+      expect(location.get("params.a")).to.be("1");
+      expect(location.get("params.b")).to.be("2");
+      next();
+    })
+  })
+
+  it("can redirect to a route with a name", function (next) {
+
+    var c = 0;
+
+    var r = router().add({
+      "/a": {
+        name: "aRoute",
+        enter: function (request, next) {
+          c++;
+          next();
+        }
+      }
+    });
+
+    r.redirect("aRoute", function () {
+      expect(c).to.be(1);
+      next();
+    });
   });
+
+  it("can redirect to a route with a name and some params", function (next) {
+    var c = 0;
+    var r = router().add({
+      "/:a": {
+        routes: {
+          "/:b": {
+            name: "ab",
+            enter: function (request, next) {
+              c++;
+              next();
+            }
+          }
+        }
+      }
+    });
+
+    r.redirect("ab", {
+      params: {
+        a: "1",
+        b: "2"
+      }
+    }, function (err, location) {
+      expect(location.pathname).to.be("/1/2");
+      expect(location.get("params.a")).to.be("1");
+      expect(location.get("params.b")).to.be("2");
+      next();
+    })
+  })
 });
