@@ -150,6 +150,7 @@ describe("redirect#", function () {
 
     r.redirect("/a?b=c", function (err, location) {
       expect(location.get("query.b")).to.be("c");
+      expect(location.get("url")).to.be("/a?b=c");
       next();
     });
   });
@@ -173,8 +174,10 @@ describe("redirect#", function () {
 
     r.redirect("/a/b?c=d", function (err, location) {
       expect(location.get("query.c")).to.be("d");
+      expect(location.get("url")).to.be("/a/b?c=d");
       r.redirect("/a/b?c=e", function (err, location) {
         expect(location.get("query.c")).to.be("e");
+        expect(location.get("url")).to.be("/a/b?c=e");
         expect(i).to.be(1);
         next();
       });
@@ -248,6 +251,7 @@ describe("redirect#", function () {
       }, function (err, location) {
         expect(location.get("pathname")).to.be("/3/4");
         expect(location.get("route.pathname")).to.be("/:a/:b");
+        expect(location.get("url")).to.be("/3/4")
         next();
       });
     });
@@ -268,6 +272,7 @@ describe("redirect#", function () {
     }, function (err, location) {
       expect(location.get("pathname")).to.be("/a");
       expect(location.get("query.a")).to.be("b");
+      expect(location.get("url")).to.be("/a?a=b")
       next();
     })
   });

@@ -30,6 +30,7 @@
     "async": "^0.7.0",
     "comerr": "0.0.6",
     "toarray": "0.0.1",
-    "mediocre": "0.0.8"
+    "mediocre": "0.0.8",
+    "hasher": "^1.2.0"
   }
 }
