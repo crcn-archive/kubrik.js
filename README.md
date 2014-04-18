@@ -5,8 +5,8 @@ for the browser, but it can also be used for other platforms such as node, or an
 
 ### Features
 
-- enter & exit hooks for routes
-- parameter loading (like express)
+- enter & exit handlers
+- parameter handlers
 - nested routes
 - naming routes
 
