@@ -150,13 +150,17 @@ describe("router#", function () {
     });
   });
 
-  it("can redirect to a route with a parent enter function", function (next) {
+  it("can redirect to a route with a parent enter / exit function", function (next) {
 
-    var c = 0;
+    var c = 0, x = 0;
 
     var r = router().add({
       enter: function (request, next) {
         c++;
+        next();
+      },
+      exit: function (request, next) {
+        x++;
         next();
       },
       "/a": {
@@ -178,7 +182,11 @@ describe("router#", function () {
     r.redirect("/a/b", function () {
       expect(c).to.be(3);
       expect(r.get("location.route")).to.be(r.routes.find({ pathname: "/a/b" }));
-      next();
+      r.redirect("/a", function () {
+        expect(c).to.be(5);
+        expect(x).to.be(1);
+        next();
+      });
     });
   });
 
