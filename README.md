@@ -167,6 +167,22 @@ router.redirect("classroom", {
 
 Kubrick comes with an HTTP listener by default, which is loaded automatically in the browser.
 
+#### router.redirect(pathnameOrRouteName[, options], complete)
+
+- `pathnameOrRouteName` - pathname or route name to redirect to
+- `options` - route name options
+  - `query` - route query
+  - `params` - route params
+- `complete` - called when redirected
+
+### router.add(routes)
+
+adds new routes to the router
+
+### router.use(plugins...)
+
+adds plugins to the router
+
 #### router.location
 
 The current location of the router
@@ -194,7 +210,7 @@ router.redirect("/home?hello=blah");
 
 similar to `location.query`. `location.params` are taken from the route parameters.
 
-### location.url
+#### location.url
 
 pathname + query params.
 
@@ -209,3 +225,7 @@ router.redirect("/home?hello=blah");
 #### location.pathname
 
 just the pathname of the location
+
+#### location.equals(location)
+
+returns TRUE of the both locations are the same
