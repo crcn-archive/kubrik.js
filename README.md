@@ -35,7 +35,6 @@ router.add({
   }
 });
 
-
 router.redirect("/classes/classid/reports", function (err, location) {
   console.log(location.get("params.classroom")); // classroom model
   console.log(location.get("pathname")); // /classes/classid/reports
