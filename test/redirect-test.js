@@ -296,6 +296,24 @@ describe("redirect#", function () {
     });
   });
 
+  it("can redirect properly if there are multiple redirects", function (next) {
+    var r = router().add({
+      "/a": {
+        enter: function (r, next) {
+          r.redirect("/b");
+        }
+      },
+      "/b": {}
+    });
+
+    r.redirect("/a", function (err, location) {
+      r.redirect("/a", function (err, location) {
+        expect(location.get("pathname")).to.be("/b");
+        next();
+      });
+    });
+  });
+
   it("redirects if a redirect property is present", function (next) {
 
     var r = router().add({

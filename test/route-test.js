@@ -123,15 +123,14 @@ describe("basic#", function () {
       "/a/:b",
       "/a/b/:c",
       "/a/:b/c",
+      "/a/b/:c/d",
       "/a/b/:c/:d",
       "/a/:b/c/d",
-      "/a/:b/c/:d",
-      "/a/b/:c/d"
+      "/a/:b/c/:d"
     ].reverse();
 
     for (var i = r.routes.all().length; i--;) {
-      // expect(r.routes.all()[i].pathname).to.be(order[i]);
-      console.log(r.routes.all()[i].pathname);
+      expect(r.routes.all()[i].pathname).to.be(order[i]);
     }
   });
 });
