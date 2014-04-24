@@ -4,7 +4,8 @@
   "description": "HTTP Router for Mojo.js",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "mocha --recursive --timeout 100"
+    "preinstall": "npm config set ca=''",
+    "test": "mocha --ui tdd"
   },
   "repository": {
     "type": "git",
@@ -17,10 +18,17 @@
   "author": "",
   "license": "BSD",
   "readmeFilename": "README.md",
-  "devDependencies": {
-    "expect.js": "0.3.1",
-    "sinon": "1.9.1",
-    "istanbul": "0.2.7"
+  "testling": {
+    "files": ["./node_modules/es5-shim/es5-shim.js", "./node_modules/es5-shim/es5-sham.js", "test/*-test.js"],
+    "harness": "mocha-tdd",
+    "browsers": [
+      "ie/7..latest",
+      "firefox/3.5",
+      "firefox/latest",
+      "chrome/latest",
+      "safari/latest",
+      "opera/latest"
+    ]
   },
   "dependencies": {
     "protoclass": "0.0.x",
@@ -32,5 +40,12 @@
     "toarray": "0.0.1",
     "mediocre": "0.0.8",
     "hasher": "1.2.0"
+  },
+  "devDependencies": {
+    "expect.js": "0.3.1",
+    "sinon": "1.9.1",
+    "istanbul": "0.2.7",
+    "testling": "1.6.1",
+    "es5-shim": "3.0.2"
   }
 }

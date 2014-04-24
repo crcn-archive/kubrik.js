@@ -1,5 +1,7 @@
 Kubrik HTTP Router [![Alt ci](https://travis-ci.org/classdojo/kubrik.png)](https://travis-ci.org/classdojo/mojo-router)
 
+[![Testling](https://ci.testling.com/classdojo/kubrik.js.png)](https://ci.testling.com/classdojo/kubrik.js)
+
 Kubrik is a flexible routing system inspired by [express](http://expressjs.com/), and [director](https://github.com/flatiron/director). It's built specifically
 for the browser, but it can also be used for other platforms such as node, or any mobile platform.
 
@@ -208,7 +210,7 @@ router.add({
 });
 
 console.log(router.routes.find({ pathname: "/home" })); // /home route
-console.log(router.routes.find({ pathname: "homeRoute" })); // /home route
+console.log(router.routes.find({ pathname: "homeRoutek " })); // /home route
 ```
 
 #### location.query
