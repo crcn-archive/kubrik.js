@@ -48,7 +48,7 @@ describe("enter#", function () {
       "/a": {
         routes: {
           "/b": {
-            enter: function (r, next) { 
+            enter: function (r, next) {
               i++;
               next();
             }
@@ -77,7 +77,7 @@ describe("enter#", function () {
         },
         routes: {
           "/b": {
-            enter: function (r, next) { 
+            enter: function (r, next) {
               i++;
               next();
             }
@@ -91,4 +91,39 @@ describe("enter#", function () {
       next();
     });
   });
+
+
+  it("automatically calls next if the argument length is 1", function (next) {
+    var i = 0;
+    var r = router().add({
+      "/a": {
+        enter: function (r) {
+          i++;
+        }
+      }
+    });
+
+    r.redirect("/a", function () {
+      expect(i).to.be(1);
+      next();
+    });
+  });
+
+  it("automatically calls next if the argument length is 0", function (next) {
+    var i = 0;
+    var r = router().add({
+      "/a": {
+        enter: function () {
+          i++;
+        }
+      }
+    });
+
+    r.redirect("/a", function () {
+      expect(i).to.be(1);
+      next();
+    });
+  });
+
+
 });
