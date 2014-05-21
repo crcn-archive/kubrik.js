@@ -250,6 +250,9 @@ just the pathname of the location
 
 returns TRUE of the both locations are the same
 
+#### location.redirect(pathname, options)
+
+redirects the location
 
 ## Mojo.js Usage
 
