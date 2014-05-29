@@ -90,6 +90,26 @@ describe("redirect#", function () {
     });
   });
 
+
+  it("merges queries from the previous request", function (next) {
+    var r = router().add({
+      "/a": {
+        routes: {
+          "/:b": {},
+          "/c": {}
+        }
+      }
+    });
+
+    r.redirect("/a/b?name=blah", function (err, location) {
+      r.redirect("/a/c?last=halb", function (err, location) {
+        expect(location.query.get("name")).to.be("blah");
+        expect(location.query.get("last")).to.be("halb");
+        next();
+      });
+    })
+  })
+
   it("can't redirect to the same location", function (next) {
 
     var i = 0;
