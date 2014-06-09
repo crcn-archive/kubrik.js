@@ -1,6 +1,6 @@
 {
   "name": "kubrik",
-  "version": "0.0.15",
+  "version": "0.1.0",
   "description": "HTTP Router for Mojo.js",
   "main": "./lib/index.js",
   "scripts": {
