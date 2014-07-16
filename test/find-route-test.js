@@ -102,4 +102,5 @@ describe("find-route#", function () {
     expect(r.routes.find({ pathname: "acRoute" }).pathname).to.be("/a/c");
     expect(r.routes.find({ pathname: ":bRoute" }).pathname).to.be("/:b");
   });
+
 });
